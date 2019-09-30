@@ -1,0 +1,18 @@
+
+func foo {
+    bar
+}
+
+func bar {
+    foo
+    onlyIncoming
+}
+
+func onlyOutgoing {
+    foo
+    bar
+}
+
+func onlyIncoming {
+
+}
