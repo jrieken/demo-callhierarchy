@@ -154,14 +154,21 @@ export class AbcLangHierarchyProvider implements vscode.CallHierarchyItemProvide
         return new MyItem(func);
     }
 
-    provideCallHierarchyOutgoingCalls(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) {
+    prepareCallHierarchy(document: vscode.TextDocument, position: vscode.Position) {
         const anchor = this._service.find(document, position);
         if (!anchor) {
             return undefined;
         }
+        return new MyItem(anchor);
+    }
+
+    provideCallHierarchyOutgoingCalls(item: vscode.CallHierarchyItem) {
+        if (!(item instanceof MyItem)) {
+            return undefined;
+        }
         // find all names inside body
         const allFuncNames = [...this._service.allFunctions()].map(func => func.name).sort().reverse();
-        const calls = this._findCalls(anchor, anchor.tree, allFuncNames);
+        const calls = this._findCalls(item.func, item.func.tree, allFuncNames);
         const result: vscode.CallHierarchyOutgoingCall[] = [];
         for (const call of calls) {
             if (call.func) {
@@ -171,14 +178,13 @@ export class AbcLangHierarchyProvider implements vscode.CallHierarchyItemProvide
         return result;
     }
 
-    provideCallHierarchyIncomingCalls(document: vscode.TextDocument, position: vscode.Position, token: vscode.CancellationToken) {
-        const anchor = this._service.find(document, position);
-        if (!anchor) {
+    provideCallHierarchyIncomingCalls(item: vscode.CallHierarchyItem) {
+        if (!(item instanceof MyItem)) {
             return undefined;
         }
         const result: vscode.CallHierarchyIncomingCall[] = [];
         for (const func of this._service.allFunctions()) {
-            const calls = this._findCalls(func, func.tree, [anchor.name]);
+            const calls = this._findCalls(func, func.tree, [item.func.name]);
             if (calls.length === 1) {
                 result.push(new vscode.CallHierarchyIncomingCall(new MyItem(func), calls[0].ranges));
             }
