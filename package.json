@@ -32,9 +32,9 @@
 		"postinstall": "node ./node_modules/vscode/bin/install"
 	},
 	"devDependencies": {
-		"typescript": "^3.3.1",
+		"typescript": "3.7.2",
 		"vscode": "^1.1.28",
-		"tslint": "^5.12.1",
+		"tslint": "^5.20.1",
 		"@types/node": "^10.12.21",
 		"@types/mocha": "^2.2.42"
 	}
