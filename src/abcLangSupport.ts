@@ -1,7 +1,4 @@
 import * as vscode from "vscode";
-import { WSASERVICE_NOT_FOUND } from "constants";
-
-
 
 class AbcLangSyntxTree {
 
@@ -136,7 +133,7 @@ class MyItem extends vscode.CallHierarchyItem {
     }
 }
 
-export class AbcLangHierarchyProvider implements vscode.CallHierarchyItemProvider {
+export class AbcLangHierarchyProvider implements vscode.CallHierarchyProvider {
 
     constructor(private _service: AbcLangLanguageService) { }
 
